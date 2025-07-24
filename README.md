@@ -66,7 +66,12 @@ Bienvenue dans **Tour Management**, une API RESTful complète et professionnelle
 
 
 | **Review** | `createReview()`       | Créer un avis lié à un tour |
+
+
 |            | `getReviewsByTourId()` | Obtenir tous les avis pour un tour |
+
+
+
 |            | `deleteReview()`       | Supprimer un avis |
 
 
@@ -75,10 +80,21 @@ Bienvenue dans **Tour Management**, une API RESTful complète et professionnelle
 
 
 | **User** | `registerUser()`         | Inscription d’un nouvel utilisateur |
+
+
+
 |         | `loginUser()`             | Authentification + génération de JWT |
+
+
 |         | `getUserProfile()`        | Voir les infos personnelles d’un utilisateur connecté |
+
+
 |         | `updateUser()`            | Modifier le profil utilisateur |
+
+
 |         | `deleteUser()`            | Supprimer un utilisateur |
+
+
 
 
 

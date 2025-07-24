@@ -51,10 +51,32 @@ Bienvenue dans **Tour Management**, une API RESTful complète et professionnelle
 | **express-validator**  | Middleware de validation des données d'entrée        |
 | **Thunder Client** / **Postman** | Outils pour tester les endpoints de l'API |
 
+## 📚 Méthodes par Modèle
+
+| 📦 Modèle | 🔧 Méthodes Implémentées | 📝 Description |
+|----------|--------------------------|----------------|
+| **Tour** | `createTour()`           | Créer un nouveau tour |
+|          | `getAllTours()`          | Obtenir tous les tours avec pagination |
+|          | `getTourById()`          | Détails d’un tour par ID |
+|          | `updateTour()`           | Modifier les informations d’un tour |
+|          | `deleteTour()`           | Supprimer un tour |
+|          | `searchTour()`           | Rechercher un tour par nom, ville, etc. |
+
+| **Review** | `createReview()`       | Créer un avis lié à un tour |
+|            | `getReviewsByTourId()` | Obtenir tous les avis pour un tour |
+|            | `deleteReview()`       | Supprimer un avis |
+
+
+| **User** | `registerUser()`         | Inscription d’un nouvel utilisateur |
+|         | `loginUser()`             | Authentification + génération de JWT |
+|         | `getUserProfile()`        | Voir les infos personnelles d’un utilisateur connecté |
+|         | `updateUser()`            | Modifier le profil utilisateur |
+|         | `deleteUser()`            | Supprimer un utilisateur |
+
 
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/ton-utilisateur/tour_management.git
+git clone https://github.com/Nourhenebenothmen22/Tour-Management-API.git
 cd tour_management
 npm install

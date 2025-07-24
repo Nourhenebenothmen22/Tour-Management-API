@@ -61,12 +61,10 @@ Bienvenue dans **Tour Management**, une API RESTful complète et professionnelle
 |           | `getTourById()`              | Détails d’un tour par ID                 |
 |           | `updateTour()`               | Modifier un tour                         |
 |           | `deleteTour()`               | Supprimer un tour                        |
-|           | `searchTour()`               | Rechercher par ville, titre, etc.        |
-|           | `uploadPhoto()`              | Upload d'image via Multer                |
+|           | `searchTour()`               | Rechercher par ville, titre, etc.        |           |
 | **Review**| `createReview()`             | Créer un avis lié à un tour              |
 |           | `getReviewsByTourId()`       | Obtenir tous les avis pour un tour       |
-|           | `deleteReview()`             | Supprimer un avis                        |
-|           | `linkReviewToTour()`         | Lier un avis au tour (relation 1:N)      |
+|           | `deleteReview()`             | Supprimer un avis                        |     |
 | **User**  | `registerUser()`             | Inscription d’un utilisateur             |
 |           | `loginUser()`                | Connexion + génération JWT               |
 |           | `getUserProfile()`           | Voir le profil utilisateur connecté      |

@@ -7,7 +7,7 @@ const {
   getAllTours,
   getTourById,
   updateTour,
-  deleteTour,getTourBySearch
+  deleteTour,getTourBySearch,getFeaturedTours
 
 } = require("../controllers/tourController");
 
@@ -19,6 +19,7 @@ router.get("/", getAllTours);
 
 // 🔍 Recherche de tours (doit être avant /:id)
 router.get("/search", getTourBySearch);
+router.get("/search/getFeaturedTours", getFeaturedTours);
 
 // 🔍 Récupérer un seul tour par ID
 router.get("/:id", getTourById);

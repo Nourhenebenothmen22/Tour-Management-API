@@ -7,7 +7,8 @@ const {
   getAllTours,
   getTourById,
   updateTour,
-  deleteTour,
+  deleteTour,getTourBySearch
+
 } = require("../controllers/tourController");
 
 // ➕ Créer un nouveau tour
@@ -15,6 +16,9 @@ router.post("/", createTour);
 
 // 📥 Récupérer tous les tours
 router.get("/", getAllTours);
+
+// 🔍 Recherche de tours (doit être avant /:id)
+router.get("/search", getTourBySearch);
 
 // 🔍 Récupérer un seul tour par ID
 router.get("/:id", getTourById);

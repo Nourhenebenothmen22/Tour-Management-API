@@ -97,4 +97,15 @@ exports.getTourBySearch = async (req, res) => {
     });
   }
 };
-
+exports.getFeaturedTours = async (req, res) => {
+      const limit = parseInt(req.query.limit) || 10;
+  try {
+   const tours = await Tour.find({ featured: true }).limit(limit);
+    if (!tours || tours.length === 0) {
+      return res.status(404).json({ message: "Aucun tour en vedette trouvé" });
+    }
+    res.status(200).json(tours);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

@@ -55,3 +55,46 @@ exports.deleteTour = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getTourBySearch = async (req, res) => {
+  try {
+    // Extraction et nettoyage des paramètres
+    const cityQuery = req.query.city || '';
+    const distanceQuery = parseInt(req.query.distance, 10);
+    const maxGroupSizeQuery = parseInt(req.query.maxGroupSize, 10);
+
+    // Vérification de la validité des paramètres
+    if (isNaN(distanceQuery) || isNaN(maxGroupSizeQuery)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Les paramètres "distance" et "maxGroupSize" doivent être des nombres valides.',
+      });
+    }
+
+    // Création de l'expression régulière insensible à la casse pour la ville
+    const cityRegex = new RegExp(cityQuery, 'i');
+
+    // Requête MongoDB avec conditions
+    const tours = await Tour.find({
+      city: cityRegex,
+      distance: { $gte: distanceQuery },
+      maxGroupSize: { $gte: maxGroupSizeQuery },
+    });
+
+    // Réponse avec les résultats
+    res.status(200).json({
+      success: true,
+      message: 'Requête réussie',
+      data: tours,
+    });
+
+  } catch (error) {
+    // Gestion des erreurs
+    res.status(500).json({
+      success: false,
+      message: 'Erreur serveur',
+      error: error.message,
+    });
+  }
+};
+

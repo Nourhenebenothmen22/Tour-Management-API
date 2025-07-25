@@ -76,10 +76,10 @@ exports.getTourBySearch = async (req, res) => {
 
     // Requête MongoDB avec conditions
     const tours = await Tour.find({
-      city: cityRegex,
-      distance: { $gte: distanceQuery },
-      maxGroupSize: { $gte: maxGroupSizeQuery },
-    });
+  city: cityRegex,
+  distance: { $lte: distanceQuery }, // Changer $gte en $lte
+  maxGroupSize: { $gte: maxGroupSizeQuery },
+});
 
     // Réponse avec les résultats
     res.status(200).json({

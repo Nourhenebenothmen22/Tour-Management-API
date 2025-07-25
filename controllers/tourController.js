@@ -120,3 +120,12 @@ exports.getFeaturedTours = async (req, res) => {
     res.status(500).json({ message: error.message }); // Retourne une erreur serveur
   }
 };
+exports.getTourCount = async (req, res) => {
+  try {
+    // Compte le nombre total de tours
+    const count = await Tour.countDocuments();
+    res.status(200).json({ count }); // Retourne le nombre de tours
+  } catch (error) {
+    res.status(500).json({ message: error.message }); // Retourne une erreur serveur
+  }
+}

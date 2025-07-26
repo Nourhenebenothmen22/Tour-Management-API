@@ -103,7 +103,7 @@ backend/
 ## 🧑‍💻 Auteur
 
 - **Nourhene Ben Othmen**
-- [LinkedIn]([https://www.linkedin.com/in/nourhen-ben-othmen-a811ab221/])  
+- [LinkedIn](https://www.linkedin.com/in/nourhen-ben-othmen-a811ab221/)  
 - [GitHub](https://github.com/Nourhenebenothmen22)
 
 ---

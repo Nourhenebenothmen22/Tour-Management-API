@@ -23,6 +23,8 @@ const userRoutes = require('./routes/users');
 app.use('/api/users', userRoutes);
 const authRoute = require('./routes/auth'); // Import de la route d'authentification
 app.use('/api/auth', authRoute); // Montage de la route d'authentification
+const reviewRoutes = require('./routes/reviews'); // Import de la route des avis
+app.use('/api/reviews', reviewRoutes); // Montage de la route des avis
 
 
 // Port depuis .env ou fallback

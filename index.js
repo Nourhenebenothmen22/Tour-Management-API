@@ -21,6 +21,8 @@ const tourRoutes = require('./routes/tours');
 app.use('/api/tours', tourRoutes);
 const userRoutes = require('./routes/users');
 app.use('/api/users', userRoutes);
+const authRoute = require('./routes/auth'); // Import de la route d'authentification
+app.use('/api/auth', authRoute); // Montage de la route d'authentification
 
 
 // Port depuis .env ou fallback

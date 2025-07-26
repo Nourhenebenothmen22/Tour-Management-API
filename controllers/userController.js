@@ -1,11 +1,19 @@
 const User=require("../models/User");
-exports.createUser=async(req,res)=>{
-    const { name, email, password } = req.body;
+exports.createUser = async (req, res) => {
+    // Vérifiez que tous les champs requis sont présents
+    const { username, email, password, photo, role } = req.body; // ✅
     try {
-        const newUser = await User.create({ name, email, password });
-        res.status(201).json(newUser); // Retourne l'utilisateur créé avec le code 201
+        // Incluez tous les champs du modèle
+        const newUser = await User.create({ 
+            username, 
+            email, 
+            password,
+            photo,
+            role // Optionnel (le modèle a une valeur par défaut)
+        });
+        res.status(201).json(newUser);
     } catch (error) {
-        res.status(400).json({ message: error.message }); // Retourne une erreur si la création échoue
+        res.status(400).json({ message: error.message });
     }
 }
 exports.getAllUsers=async(req,res)=>{
@@ -26,6 +34,32 @@ exports.getUserById=async(req,res)=>{
         res.status(500).json({ message: error.message }); // Retourne une erreur serveur
     }
 }
+// Récupérer les utilisateurs ayant le rôle "admin"
+exports.getAdminUsers = async (req, res) => {
+  const limit = parseInt(req.query.limit) || 10; // Limite le nombre de résultats
+  try {
+    // Recherche les utilisateurs avec le rôle "admin"
+    const admins = await User.find({ role: "admin" }).limit(limit);
+    
+    if (!admins || admins.length === 0) {
+      return res.status(404).json({ message: "Aucun utilisateur admin trouvé" });
+    }
+
+    res.status(200).json(admins); // Retourne la liste des admins
+  } catch (error) {
+    res.status(500).json({ message: error.message }); // Gestion d'erreur serveur
+  }
+};
+exports.getUserCount = async (req, res) => {
+  try {
+    // Compte le nombre total d'utilisateurs
+    const count = await User.countDocuments();
+    res.status(200).json({ count }); // Retourne le nombre d'utilisateurs
+  } catch (error) {
+    res.status(500).json({ message: error.message }); // Retourne une erreur serveur
+  }
+};
+
 exports.updateUser=async(req,res)=>{
     try {
         const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });

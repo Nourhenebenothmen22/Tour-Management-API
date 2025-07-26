@@ -1,12 +1,15 @@
 const User = require("../models/User"); // Importer le modèle User
+const bcrypt = require("bcryptjs"); // Importer bcrypt pour le hachage des mots de passe
 exports.registerUser = async (req, res) => {
   const { username, email, password, photo, role } = req.body; // Récupérer les données de l'utilisateur
   try {
+    const salt=bcrypt.genSaltSync(10); // Générer un sel pour le hachage
+    const hashedPassword = bcrypt.hashSync(password, salt); // Hacher le mot de passe
     // Créer un nouvel utilisateur avec les données fournies
     const newUser = await User.create({ 
       username, 
       email, 
-      password,
+      password: hashedPassword, // Utiliser le mot de passe haché
       photo,
       role // Le rôle est optionnel et a une valeur par défaut dans le modèle
     });

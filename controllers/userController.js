@@ -24,16 +24,6 @@ exports.getAllUsers=async(req,res)=>{
         res.status(500).json({ message: error.message }); // Retourne une erreur serveur
     }
 }
-
-exports.getUserById=async(req,res)=>{
-    try {
-        const user = await User.findById(req.params.id);
-        if (!user) return res.status(404).json({ message: "Utilisateur non trouvé" }); // Si non trouvé
-        res.status(200).json(user); // Retourne l'utilisateur trouvé
-    } catch (error) {
-        res.status(500).json({ message: error.message }); // Retourne une erreur serveur
-    }
-}
 // Récupérer les utilisateurs ayant le rôle "admin"
 exports.getAdminUsers = async (req, res) => {
   const limit = parseInt(req.query.limit) || 10; // Limite le nombre de résultats
@@ -59,6 +49,17 @@ exports.getUserCount = async (req, res) => {
     res.status(500).json({ message: error.message }); // Retourne une erreur serveur
   }
 };
+
+exports.getUserById=async(req,res)=>{
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) return res.status(404).json({ message: "Utilisateur non trouvé" }); // Si non trouvé
+        res.status(200).json(user); // Retourne l'utilisateur trouvé
+    } catch (error) {
+        res.status(500).json({ message: error.message }); // Retourne une erreur serveur
+    }
+}
+
 
 exports.updateUser=async(req,res)=>{
     try {

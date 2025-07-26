@@ -1,96 +1,120 @@
 # 🌍 Tour Management API
 
-Bienvenue dans **Tour Management**, une API RESTful complète et professionnelle pour la gestion de tours, utilisateurs et avis clients. Ce projet utilise **Node.js**, **Express**, **MongoDB**, **JWT**, **Multer** et bien d'autres pour fournir une solution robuste et scalable.
+API RESTful complète pour la gestion de tours de voyage, développée avec Node.js, Express et MongoDB.
 
 ---
 
-## 🚀 Fonctionnalités clés
+## 🚀 Fonctionnalités principales
 
-### ✅ Authentification
-- 🔐 JWT sécurisé (inscription, connexion, middleware de protection)
-- Rôles d'utilisateur (admin, user, etc.)
-
-### 🧭 Gestion des Tours (`Tour`)
-- CRUD complet : création, lecture, mise à jour, suppression
-- 📸 Upload de photo via **Multer** (stocké dans `/storage`)
-- 🎯 Recherches : par nom, ville, prix
-- 📄 Pagination intégrée pour les grandes listes
-
-### 📝 Gestion des Avis (`Review`)
-- Relation **1:N** (un tour peut avoir plusieurs avis)
-- Population automatique avec `.populate("reviews")`
-- Calcul de la moyenne des notes (optionnel)
-
-### 👤 Gestion des Utilisateurs (`User`)
-- Création de comptes utilisateurs
-- Données personnelles protégées
-
-### 🔗 Intégration Sequelize
-- Implémentation démonstrative d'une relation `1:N` entre utilisateurs et avis avec Sequelize (ex : MySQL/PostgreSQL)
-
-### 🧪 Validation
-- Express-validator intégré pour vérifier les champs obligatoires et le format des données
-
-### 📁 Upload de fichiers
-- Intégration de **Multer** avec dossier personnalisé `/storage` pour les images de tours
+- **CRUD complet** pour les utilisateurs et les tours (création, lecture, mise à jour, suppression)
+- **Recherche avancée** de tours (par ville, distance, taille du groupe)
+- **Pagination** et **filtrage**
+- **Comptage** du nombre total de tours et d’utilisateurs
+- **Gestion des rôles** (extraction des utilisateurs admin)
+- **Gestion des erreurs** centralisée
+- **Code commenté et structuré**
 
 ---
 
+## 🛠️ Technologies utilisées
 
-## 🛠️ Stack technique
+- **Node.js** (runtime JavaScript)
+- **Express.js** (framework web)
+- **MongoDB** (base de données NoSQL)
+- **Mongoose** (ODM pour MongoDB)
+- **Git** (gestion de version)
+- **Thunder Client / Postman** (tests d’API)
+- **VS Code** (environnement de développement)
 
-| 🧩 Technologie          | 🧪 Rôle                                               |
-|------------------------|-------------------------------------------------------|
-| **Node.js**            | Environnement d'exécution JavaScript                 |
-| **Express**            | Framework léger pour construire des APIs REST        |
-| **MongoDB + Mongoose** | Base de données NoSQL + ORM pour MongoDB             |
-| **Sequelize**          | ORM SQL pour gérer des relations (1:* démonstratif)  |
-| **JWT**                | Authentification basée sur token sécurisée           |
-| **Multer**             | Upload de fichiers (ex: images des tours)            |
-| **dotenv**             | Gestion des variables d'environnement (.env)         |
-| **express-validator**  | Middleware de validation des données d'entrée        |
-| **Thunder Client** / **Postman** | Outils pour tester les endpoints de l'API |
+---
 
-## 📚 Méthodes par Modèle
+## 📁 Structure du projet
 
+```
+backend/
+│
+├── controllers/         # Logique métier (tours, utilisateurs)
+│   ├── tourController.js
+│   └── userController.js
+│
+├── models/              # Schémas Mongoose
+│   ├── Tour.js
+│   └── User.js
+│
+├── routes/              # Définition des routes Express
+│   ├── tours.js
+│   └── users.js
+│
+├── index.js             # Point d’entrée de l’application
+└── package.json         # Dépendances et scripts
+```
 
-| 📦 Modèle  | 🔧 Méthode                   | 📝 Description                           |
-|-----------|------------------------------|------------------------------------------|
-| **Tour**  | `createTour()`               | Créer un nouveau tour                    |
-|           | `getAllTours()`              | Obtenir tous les tours (avec pagination) |
-|           | `getTourById()`              | Détails d’un tour par ID                 |
-|           | `updateTour()`               | Modifier un tour                         |
-|           | `deleteTour()`               | Supprimer un tour                        |
-|           | `searchTour()`               | Rechercher par ville, titre, etc.        |           |
-| **Review**| `createReview()`             | Créer un avis lié à un tour              |
-|           | `getReviewsByTourId()`       | Obtenir tous les avis pour un tour       |
-|           | `deleteReview()`             | Supprimer un avis                        |     |
-| **User**  | `registerUser()`             | Inscription d’un utilisateur             |
-|           | `loginUser()`                | Connexion + génération JWT               |
-|           | `getUserProfile()`           | Voir le profil utilisateur connecté      |
-|           | `updateUser()`               | Modifier les infos utilisateur           |
-|           | `deleteUser()`               | Supprimer un utilisateur                 |
+---
 
+## ⚡ Installation & Lancement
 
+1. **Cloner le projet**
+   ```bash
+   git clone https://github.com/Nourhenebenothmen22/Tour-Management-API.git
+   cd Tour-Management-API/backend
+   ```
 
+2. **Installer les dépendances**
+   ```bash
+   npm install
+   ```
 
+3. **Configurer la base de données**
+   - Crée un fichier `.env` à la racine avec ta chaîne de connexion MongoDB :
+     ```
+     MONGO_URI=mongodb://localhost:27017/tour_management
+     PORT=5000
+     ```
 
+4. **Démarrer le serveur**
+   ```bash
+   npm start
+   ```
 
+---
 
+## 📚 Exemples de routes
 
+- **Tours**
+  - `POST   /api/tours`           : Créer un tour
+  - `GET    /api/tours`           : Récupérer tous les tours
+  - `GET    /api/tours/search`    : Recherche avancée
+  - `GET    /api/tours/:id`       : Détail d’un tour
+  - `PUT    /api/tours/:id`       : Modifier un tour
+  - `DELETE /api/tours/:id`       : Supprimer un tour
+  - `GET    /api/tours/count`     : Nombre total de tours
 
+- **Utilisateurs**
+  - `POST   /api/users`           : Créer un utilisateur
+  - `GET    /api/users`           : Récupérer tous les utilisateurs
+  - `GET    /api/users/:id`       : Détail d’un utilisateur
+  - `PUT    /api/users/:id`       : Modifier un utilisateur
+  - `DELETE /api/users/:id`       : Supprimer un utilisateur
+  - `GET    /api/users/count`     : Nombre total d’utilisateurs
+  - `GET    /api/users/admins`    : Liste des admins
 
+---
 
+## 🧑‍💻 Auteur
 
+- **Nourhene Ben Othmen**
+- [LinkedIn](https://www.linkedin.com/in/nourhen-ben-othmen-a811ab221/)  
+- [GitHub](https://github.com/Nourhenebenothmen22)
 
+---
 
+## 📢 Contribution
 
+Les contributions sont les bienvenues !  
+N’hésitez pas à ouvrir une issue ou une pull request.
 
+---
 
+## 📝 Licence
 
-## 📦 Installation
-
-```bash
-git clone https://github.com/Nourhenebenothmen22/Tour-Management-API.git
-cd tour_management
-npm install
+Ce projet est sous licence MIT.

@@ -6,11 +6,13 @@ API RESTful complète pour la gestion de tours de voyage, développée avec Node
 
 ## 🚀 Fonctionnalités principales
 
-- **Authentification** : inscription, (bientôt) connexion et déconnexion des utilisateurs
-- **CRUD complet** pour les utilisateurs et les tours
+- **Authentification** : inscription, connexion et déconnexion des utilisateurs
+- **CRUD complet** pour les utilisateurs, les tours et les avis
+- **Gestion des avis** : création et récupération des reviews liées aux tours
 - **Recherche avancée** de tours (ville, distance, taille du groupe)
+- **Relations bidirectionnelles** entre tours et avis
 - **Pagination** et **filtrage**
-- **Comptage** du nombre total de tours et d’utilisateurs
+- **Comptage** du nombre total de tours et d'utilisateurs
 - **Gestion des rôles** (utilisateurs admin)
 - **Gestion des erreurs** centralisée
 - **Code commenté et structuré**
@@ -24,8 +26,12 @@ API RESTful complète pour la gestion de tours de voyage, développée avec Node
 - **MongoDB** (base de données NoSQL)
 - **Mongoose** (ODM pour MongoDB)
 - **Git** (gestion de version)
-- **Thunder Client / Postman** (tests d’API)
+- **Thunder Client / Postman** (tests d'API)
 - **VS Code** (environnement de développement)
+
+
+
+
 
 ---
 
@@ -34,19 +40,24 @@ API RESTful complète pour la gestion de tours de voyage, développée avec Node
 ```
 backend/
 │
-├── controllers/         # Logique métier (tours, utilisateurs, auth)
-│   ├── tourController.js
-│   ├── userController.js
-│   └── authController.js
+├── controllers/ # Logique métier
+│ ├── tourController.js
+│ ├── userController.js
+│ ├── authController.js
+│ └── reviewController.js
+|    
+|
 │
-├── models/              # Schémas Mongoose
-│   ├── Tour.js
-│   └── User.js
+├── models/ # Schémas Mongoose
+│ ├── Tour.js
+│ ├── User.js
+│ └── Review.js
 │
-├── routes/              # Définition des routes Express
-│   ├── tours.js
-│   ├── users.js
-│   └── auth.js
+├── routes/ # Définition des routes Express
+│ ├── tours.js
+│ ├── users.js
+│ ├── auth.js
+│ └── reviews.js 
 │
 ├── index.js             # Point d’entrée de l’application
 └── package.json         # Dépendances et scripts
@@ -132,6 +143,8 @@ backend/
 - `GET    /api/tours/count`     : Nombre total de tours
 
 ---
+
+
 
 ## 🧑‍💻 Auteur
 

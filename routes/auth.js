@@ -1,6 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { registerUser,loginUser} = require("../controllers/authController");
-router.post("/register", registerUser); // Route pour l'enregistrement d'un nouvel utilisateur
-router.post("/login", loginUser); // Route pour la connexion d'un utilisateur
+
+const { registerUser, loginUser, currentUser } = require("../controllers/authController");
+const validateToken = require("../Middleware/validateToken");
+
+router.post("/register", registerUser);
+router.post("/login", loginUser);
+
+// ✅ Route protégée : obtenir les infos de l'utilisateur connecté
+router.get("/current", validateToken, currentUser);
+
 module.exports = router;

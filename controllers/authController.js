@@ -1,43 +1,104 @@
-const User = require("../models/User"); // Importer le modèle User
-const bcrypt = require("bcryptjs"); // Importer bcrypt pour le hachage des mots de passe
-const jwt = require("jsonwebtoken"); // Importer jsonwebtoken pour la gestion des tokens
+const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
 exports.registerUser = async (req, res) => {
-  const { username, email, password, photo, role } = req.body; // Récupérer les données de l'utilisateur
+  const { username, email, password, photo, role } = req.body;
+  
   try {
-    const salt=bcrypt.genSaltSync(10); // Générer un sel pour le hachage
-    const hashedPassword = bcrypt.hashSync(password, salt); // Hacher le mot de passe
-    // Créer un nouvel utilisateur avec les données fournies
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "L'email est déjà utilisé" });
+    }
+
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+
     const newUser = await User.create({ 
       username, 
       email, 
-      password: hashedPassword, // Utiliser le mot de passe haché
+      password: hashedPassword,
       photo,
-      role // Le rôle est optionnel et a une valeur par défaut dans le modèle
+      role
     });
-    res.status(201).json(newUser); // Retourner l'utilisateur créé avec le code 201
+
+    // Créer un token après l'inscription
+    const token = jwt.sign(
+      { id: newUser._id, email: newUser.email, role: newUser.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.cookie("accessToken", token, { 
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 3600000 // 1 heure
+    });
+
+    // Ne pas renvoyer le mot de passe
+    const userResponse = newUser.toObject();
+    delete userResponse.password;
+
+    res.status(201).json({ user: userResponse, token });
   } catch (error) {
-    res.status(400).json({ message: error.message }); // Retourner une erreur si la création échoue
+    res.status(400).json({ message: error.message });
   }
-}
+};
+
 exports.loginUser = async (req, res) => {
-  const { email, password } = req.body; // Récupérer les données de connexion
+  const { email, password } = req.body;
+  
   try {
-    // Trouver l'utilisateur par son email
-    const user = await User.find({ email });
-    if (!user || user.length === 0) {
-      return res.status(404).json({ message: "Utilisateur non trouvé" }); // Si l'utilisateur n'existe pas
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
     }
-    // Vérifier le mot de passe
-    const isPasswordValid = bcrypt.compareSync(password, user[0].password);
+
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Mot de passe incorrect" }); // Si le mot de passe est invalide
+      return res.status(401).json({ message: "Mot de passe incorrect" });
     }
-    const token = jwt.sign({ id: user[0]._id, email: user[0].email }, process.env.JWT_SECRET, { expiresIn: "1h" }); // Générer un token JWT
-    res.cookie("accessToken", token, { httpOnly: true }); // Stocker le token dans un cookie HTTP-only
-    user[0].password = undefined; // Ne pas retourner le mot de passe dans la réponse
-    user[0].role = undefined; // Ne pas retourner le rôle dans la réponse
-    res.status(200).json({ message: "Connexion réussie", user: user[0] }); // Retourner l'utilisateur connecté
+
+    const token = jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.cookie("accessToken", token, { 
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 3600000
+    });
+
+    const userResponse = user.toObject();
+    delete userResponse.password;
+
+    res.status(200).json({ message: "Connexion réussie", user: userResponse, token });
   } catch (error) {
-    res.status(500).json({ message: error.message }); //     const helmet = require("helmet");
+    res.status(500).json({ message: error.message });
+  }
+};
+exports.currentUser = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Utilisateur non authentifié" });
+    }
+
+    const user = await User.findById(req.user.id).select("-password"); // Exclure le mot de passe
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 }
+
+
+exports.logoutUser = (req, res) => {
+  res.clearCookie("accessToken");
+  res.status(200).json({ message: "Déconnexion réussie" });
+};
